@@ -1,35 +1,30 @@
 import "@/global.css";
-
 import { router, Slot } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useContext, useEffect } from "react";
 import AuthProvider, { AuthContext } from "../contexts/auth-context";
 
-export default function Layout() {
-  const { currentUser } = useContext(AuthContext);
+const RootLayout = () => {
+  const { currentUser, loadingHomeScreen } = useContext(AuthContext);
 
   useEffect(() => {
+    if (loadingHomeScreen) return;
+
     if (currentUser) {
       router.replace("/home");
-      return;
+    } else {
+      router.replace("/sign-in");
     }
+  }, [currentUser, loadingHomeScreen]);
 
-    router.replace("/sign-in");
-  }, [currentUser]);
+  return <Slot />;
+};
 
-  const RootLayout = () => {
-    return (
-      <React.Fragment>
-        <Slot />
-
-        <StatusBar style="inverted" translucent />
-      </React.Fragment>
-    );
-  };
-
+export default function Layout() {
   return (
     <AuthProvider>
       <RootLayout />
+      <StatusBar style="inverted" translucent />
     </AuthProvider>
   );
 }

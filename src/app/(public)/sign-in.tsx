@@ -1,14 +1,14 @@
 import { AuthContext } from "@/src/contexts/auth-context";
 import { router } from "expo-router";
 import { useContext, useState } from "react";
-import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Image, Keyboard, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignIn() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { signIn } = useContext(AuthContext);
+  const { signIn, loadingAuth } = useContext(AuthContext);
 
   const handleSignIn = () => {
     if (!email || !password) {
@@ -21,8 +21,7 @@ export default function SignIn() {
       password,
     });
 
-    setEmail("");
-    setPassword("");
+    Keyboard.dismiss();
   };
 
   return (
@@ -47,20 +46,17 @@ export default function SignIn() {
           secureTextEntry
         />
 
-        <TouchableOpacity
-          className="mx-8 mb-4 rounded bg-blue-600 p-4"
-          onPress={handleSignIn}
-        >
-          <Text className="text-center text-2xl font-bold text-white">
-            Acessar
-          </Text>
+        <TouchableOpacity className="mx-8 mb-4 rounded bg-blue-600 p-4" onPress={handleSignIn}>
+          {loadingAuth ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text className="text-center text-2xl font-bold text-white">Acessar</Text>
+          )}
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity onPress={() => router.navigate("/sign-up")}>
-        <Text className="text-center text-xl italic text-white">
-          Criar conta
-        </Text>
+        <Text className="text-center text-xl italic text-white">Criar conta</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
