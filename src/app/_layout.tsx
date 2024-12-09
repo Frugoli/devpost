@@ -2,14 +2,20 @@ import "@/global.css";
 
 import { router, Slot } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
+import AuthProvider, { AuthContext } from "../contexts/auth-context";
 
 export default function Layout() {
-  useEffect(() => {
-    const user = false;
+  const { currentUser } = useContext(AuthContext);
 
-    user ? router.replace("/home") : router.replace("/sign-in");
-  }, []);
+  useEffect(() => {
+    if (currentUser) {
+      router.replace("/home");
+      return;
+    }
+
+    router.replace("/sign-in");
+  }, [currentUser]);
 
   const RootLayout = () => {
     return (
@@ -21,5 +27,9 @@ export default function Layout() {
     );
   };
 
-  return <RootLayout />;
+  return (
+    <AuthProvider>
+      <RootLayout />
+    </AuthProvider>
+  );
 }

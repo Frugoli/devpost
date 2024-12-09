@@ -1,8 +1,12 @@
 import { router } from "expo-router";
+import { useState } from "react";
 import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignIn() {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
   return (
     <SafeAreaView className="flex-1 justify-center bg-zinc-800">
       <View className="mb-10 items-center">
@@ -12,14 +16,20 @@ export default function SignIn() {
       <View>
         <TextInput
           className="mx-8 mb-4 rounded bg-zinc-50 p-4 text-lg"
-          placeholder="Seu nome"
+          placeholder="email@email.com"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
         />
+
         <TextInput
           className="mx-8 mb-4 rounded bg-zinc-50 p-4 text-lg"
           placeholder="*********"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          secureTextEntry
         />
 
-        <TouchableOpacity className="mx-8 mb-4 rounded bg-blue-400 p-4">
+        <TouchableOpacity className="mx-8 mb-4 rounded bg-blue-600 p-4">
           <Text className="text-center text-2xl font-bold text-white">
             Acessar
           </Text>
