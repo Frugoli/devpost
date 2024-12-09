@@ -1,7 +1,14 @@
 import { AuthContext } from "@/src/contexts/auth-context";
 import { router } from "expo-router";
 import { useContext, useState } from "react";
-import { ActivityIndicator, Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignUp() {
@@ -53,7 +60,10 @@ export default function SignUp() {
           secureTextEntry
         />
 
-        <TouchableOpacity className="mx-8 mb-4 rounded bg-blue-600 p-4" onPress={handleSignUp}>
+        <TouchableOpacity
+          className="mx-8 mb-4 rounded bg-blue-600 p-4"
+          onPress={handleSignUp}
+        >
           {loadingAuth ? (
             <ActivityIndicator color="#fff" />
           ) : (
@@ -62,7 +72,9 @@ export default function SignUp() {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => router.navigate("/sign-in")}>
-          <Text className="text-center text-xl italic text-white">Já tenho uma conta</Text>
+          <Text className="text-center text-xl italic text-white">
+            Já tenho uma conta
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
