@@ -1,5 +1,6 @@
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
+import { router } from "expo-router";
 import {
   createContext,
   ReactNode,
@@ -12,6 +13,7 @@ import { IUser } from "../types/user";
 
 export const AuthContext = createContext<IAuthContext>({
   currentUser: null,
+  signIn: async ({ email, password }) => null,
   signUp: async ({ name, email, password }) => null,
 });
 
@@ -21,6 +23,34 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     "password"
   > | null>(null);
 
+  const signIn = useCallback(
+    async ({ email, password }: Pick<IUser, "email" | "password">) => {
+      try {
+        const isAuth = await auth().signInWithEmailAndPassword(email, password);
+
+        if (isAuth) {
+          const userProfile = await firestore()
+            .collection("users")
+            .doc(isAuth.user.uid)
+            .get();
+
+          if (userProfile) {
+            setCurrentUser({
+              uid: userProfile.data()?.uid,
+              name: userProfile.data()?.name,
+              email: userProfile.data()?.email,
+            });
+
+            router.replace("/home");
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    []
+  );
+
   const signUp = useCallback(
     async ({ name, email, password }: Omit<IUser, "uid">) => {
       try {
@@ -29,7 +59,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
           password
         );
 
-        if (authResult.user) {
+        if (authResult) {
           await firestore().collection("users").doc(authResult.user.uid).set({
             name,
             created_at: new Date(),
@@ -40,9 +70,11 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
             name,
             email,
           });
+
+          router.replace("/home");
         }
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     },
     []
@@ -51,9 +83,10 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const contextValue = useMemo(
     () => ({
       currentUser,
+      signIn,
       signUp,
     }),
-    [currentUser, signUp]
+    [currentUser, signIn, signUp]
   );
 
   return (

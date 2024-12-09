@@ -11,7 +11,7 @@ export default function SignUp() {
 
   const { signUp } = useContext(AuthContext);
 
-  const handleSignUp = async () => {
+  const handleSignUp = () => {
     if (!name || !email || !password) {
       alert("Campos obrigatórios não preenchidos!");
       return;
@@ -26,8 +26,6 @@ export default function SignUp() {
     setName("");
     setEmail("");
     setPassword("");
-
-    router.replace("/home");
   };
 
   return (
