@@ -5,27 +5,29 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function SignIn() {
   return (
     <SafeAreaView className="flex-1 justify-center bg-zinc-800">
-      <View className="items-center mb-10">
+      <View className="mb-10 items-center">
         <Image source={require("../../assets/images/DevPost.png")} />
       </View>
 
       <View>
         <TextInput
-          className="bg-zinc-50 mx-8 rounded mb-4 p-4 text-lg"
-          placeholder="Digite seu email..."
+          className="mx-8 mb-4 rounded bg-zinc-50 p-4 text-lg"
+          placeholder="Seu nome"
         />
         <TextInput
-          className="bg-zinc-50 mx-8 rounded mb-4 p-4 text-lg"
-          placeholder="Digite sua senha..."
+          className="mx-8 mb-4 rounded bg-zinc-50 p-4 text-lg"
+          placeholder="*********"
         />
 
-        <TouchableOpacity className="bg-blue-400 mx-8 rounded mb-4 p-4">
-          <Text className="text-2xl text-center text-white">Acessar</Text>
+        <TouchableOpacity className="mx-8 mb-4 rounded bg-blue-400 p-4">
+          <Text className="text-center text-2xl font-bold text-white">
+            Acessar
+          </Text>
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity onPress={() => router.navigate("/sign-up")}>
-        <Text className="text-center italic text-white text-xl">
+        <Text className="text-center text-xl italic text-white">
           Criar conta
         </Text>
       </TouchableOpacity>
